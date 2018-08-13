@@ -1,17 +1,18 @@
 Feature: Login
 
+@success_login
 Scenario: success login
-  Given I open automationpractice
+  Given I open login page
   When I put validated account
-  Then I see logout
+  And I submit
   Then I can logout
 
+@failed_login
 Scenario Outline: failed login
-  Then I clear input field id "email"
-  And I put <username> into field having id "email"
-  Then I clear input field id "passwd"
-  And I put <password> into field having id "passwd"
-  Then I submit
+  Given I open login page
+  When I put <username> into email field
+  And I put <password> into password field
+  And I submit
   Then I see alert
   Examples:
 			|username| password |

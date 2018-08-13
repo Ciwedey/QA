@@ -3,17 +3,16 @@ require "Selenium-webdriver"
 driver = Selenium::WebDriver.for :chrome
 driver.manage.window.maximize
 wait = Selenium::WebDriver::Wait.new(:timeout => 15)
-uname = 'vaisravana.bishamon@gmail.com'
-pwd = 'salestock'
+driver.navigate.to "http://automationpractice.com/"
+uname = 'your email'   #put valid email here
+pwd = 'your password'  #put valid password here
 
-
-Given(/^I open automationpractice/) do
-  driver.navigate.to "http://automationpractice.com/"
+Given (/^I open login page/) do
+  driver.find_element(:xpath,'//*[@id="header"]/div[2]/div/div/nav/div[1]/a').click
+  sleep(3)
 end
 
 When(/^I put validated account/) do
-  driver.find_element(:xpath,'//*[@id="header"]/div[2]/div/div/nav/div[1]/a').click
-  sleep(3)
   input = wait.until {
     element = driver.find_element(name:"email")
     element if element.displayed?
@@ -23,17 +22,12 @@ input.send_keys (uname)
   input = wait.until {
     element = driver.find_element(name:"passwd")
     element if element.displayed?
-  }
+}
 input.send_keys (pwd)
-    element = driver.find_element(:id,'SubmitLogin').click
 end
 
-Then(/^I see logout/) do
-wait.until {
-  element = driver.find_element(:xpath,'//*[@id="header"]/div[2]/div/div/nav/div[2]/a')
-  element if element.displayed?
-}
-sleep(2)
+And (/^I submit/) do
+    driver.find_element(:id,'SubmitLogin').click
 end
 
 Then(/^I can logout/) do
@@ -41,51 +35,33 @@ Then(/^I can logout/) do
   sleep(5)
 end
 
-Then(/^I clear input field id "email"/) do
+When(/^I put (.*) into email field/) do |username|
   input = wait.until {
     element = driver.find_element(name:"email")
     element if element.displayed?
-  }
+}
   input.clear
-  end
+  input.send_keys (username)
+end
 
-  And(/^I put (.*) into field having id "email"/) do |username|
-    input = wait.until {
-     element = driver.find_element(name:"email")
-     element if element.displayed?
-     }
-     input.send_keys (username)
-   end
+And (/^I put (.*) into password field/) do |password|
+  input = wait.until {
+    element = driver.find_element(name:"passwd")
+    element if element.displayed?
+}
+  input.clear
+  input.send_keys (password)
+end
 
-   Then(/^I clear input field id "passwd"/) do
-     input = wait.until {
-       element = driver.find_element(name:"passwd")
-       element if element.displayed?
-     }
-     input.clear
-   end
-
-   And (/^I put (.*) into field having id "passwd"/) do |password|
-     input = wait.until {
-      element = driver.find_element(name:"passwd")
-      element if element.displayed?
-      }
-      input.send_keys (password)
-    end
-
-    Then (/^I submit/) do
-      element = driver.find_element(:id,'SubmitLogin').click
-    end
-
-    Then (/^I see alert/) do
-    input = wait.until {
-      element = driver.find_element(:xpath,'//*[@id="center_column"]/div[1]/p')
+Then (/^I see alert/) do
+  input = wait.until {
+    element = driver.find_element(:xpath,'//*[@id="center_column"]/div[1]/p')
       if element
         puts "success"
       else
         puts "failed"
       end
-      element if element.displayed?
-    }
-    puts "Test passed"
-    end
+    element if element.displayed?
+}
+        puts "Test passed"
+end
