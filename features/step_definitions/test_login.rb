@@ -1,4 +1,3 @@
-#This feature for login an exist account
 require "Selenium-webdriver"
 driver = Selenium::WebDriver.for :chrome
 driver.manage.window.maximize
@@ -7,6 +6,8 @@ driver.navigate.to "http://automationpractice.com/"
 uname = 'your email'   #put valid email here
 pwd = 'your password'  #put valid password here
 
+
+#This function for login with valid credential
 Given (/^I open login page/) do
   driver.find_element(:xpath,'//*[@id="header"]/div[2]/div/div/nav/div[1]/a').click
   sleep(3)
@@ -35,6 +36,9 @@ Then(/^I can logout/) do
   sleep(5)
 end
 
+
+
+#This function for login with invalid credential
 When(/^I put (.*) into email field/) do |username|
   input = wait.until {
     element = driver.find_element(name:"email")
