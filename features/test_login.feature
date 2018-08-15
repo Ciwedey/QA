@@ -15,7 +15,7 @@ Scenario Outline: failed login
   And I submit
   Then I see alert
   Examples:
-			|username| password |
+			|username|password  |
 			|test1   |password1 |
 			|test2   |password2 |
 			|test3   |password3 |

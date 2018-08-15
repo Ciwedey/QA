@@ -1,10 +1,10 @@
-require "Selenium-webdriver"
+require 'selenium-webdriver'
 driver = Selenium::WebDriver.for :chrome
 driver.manage.window.maximize
 wait = Selenium::WebDriver::Wait.new(:timeout => 15)
 driver.navigate.to "http://automationpractice.com/"
-uname = 'your email'   #put valid email here
-pwd = 'your password'  #put valid password here
+uname = 'user email'   #put valid email here
+pwd = 'user password'  #put valid password here
 
 
 #This function for login with valid credential
@@ -32,10 +32,14 @@ And (/^I submit/) do
 end
 
 Then(/^I can logout/) do
-  driver.find_element(:xpath,'//*[@id="header"]/div[2]/div/div/nav/div[2]/a').click
-  sleep(5)
+  if element = driver.find_element(:class=>"logout")
+    element.displayed?
+    element.click
+  else
+    screenshot_file = "_#{Time.now.strftime('%Y-%m-%d %H-%M-%S')}.png"
+    driver.save_screenshot ('E:\QA\screenshots\failed'+ screenshot_file +'')
+  end
 end
-
 
 
 #This function for login with invalid credential
@@ -68,4 +72,11 @@ Then (/^I see alert/) do
     element if element.displayed?
 }
         puts "Test passed"
+end
+
+After do |scenario|
+  if scenario.failed?
+    screenshot_file = "_#{Time.now.strftime('%Y-%m-%d %H-%M-%S')}.png"
+    driver.save_screenshot ('E:\QA\screenshots\failed'+ screenshot_file +'')
+  end
 end
