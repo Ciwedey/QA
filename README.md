@@ -25,3 +25,4 @@
 1. Open the terminal or command prompt
 2. Change directory into automation project directory
 3. Type cucumber and enter (to run a specific scenario type: cucumber -t @nameofscenario)
+4. For generating Report, type (cucumber -f pretty -f html -o report.html) when execute script in cmd.
